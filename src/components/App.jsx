@@ -50,6 +50,19 @@ export class App extends Component {
     });
   };
 
+  componentDidMount() {
+    const localData = localStorage.getItem('contacts');
+    if (localData && JSON.parse(localData).length > 0) {
+      this.setState({ contacts: JSON.parse(localData) });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.contacts.length !== this.state.contacts.length) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
   render() {
     const { contacts, filter } = this.state;
     const visibleContacts = contacts.filter(contact => {
